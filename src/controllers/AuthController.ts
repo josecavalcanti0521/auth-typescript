@@ -20,7 +20,10 @@ export class AuthController {
 
     try {
       const user = await this.authService.register(dataUser);
-      return res.status(201).json(user);
+
+      if(!user) return res.status(404).json({ message: 'Email already in use. Please use another email address.' })
+
+      return res.status(201).json({ name: user?.name, email: user?.email });
     } catch (error: any) {
       return res.status(404).json({ error: error.message })
     }

@@ -4,13 +4,16 @@ import User from "../models/User";
 import { IUserRepository } from "./interfaces/IUserRepository";
 
 export class UserRepository implements IUserRepository {
-  async create(dataUser: CreateUserDto): Promise<IUser | null> {
+  async create(dataUser: CreateUserDto): Promise<IUser> {
     const userInstance = new User(dataUser);
 
     const savedUser = (await userInstance.save());
-    
-    if(!savedUser) return null;
-
     return savedUser;
+  }
+
+  async findByEmail(email: string): Promise<IUser | null> {
+    const user = await User.findOne({ email }).lean<IUser>();
+
+    return user ? user : null;
   }
 }

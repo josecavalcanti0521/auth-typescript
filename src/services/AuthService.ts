@@ -12,6 +12,10 @@ export class AuthService implements IAuthService{
   }
 
   async register(data: CreateUserDto): Promise<IUser | null> {
+    const userExists = await this.userRepository.findByEmail(data.email);
+
+    if(userExists) return null;
+
     const salt = await bcrypt.genSalt(10)
     const hashPassword = await bcrypt.hash(data.password, salt);
 
