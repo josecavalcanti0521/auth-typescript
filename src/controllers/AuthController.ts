@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { AuthService } from "../services/AuthService";
 import { CreateUserDto } from "../dtos/CreateUser.dto";
 
@@ -9,7 +9,7 @@ export class AuthController {
     this.authService = authService;
   }
 
-  async register(req: Request, res: Response) {
+  async register(req: Request, res: Response, next: NextFunction) {
     const { name, email, password } = req.body;
 
     const dataUser: CreateUserDto = {
@@ -20,12 +20,9 @@ export class AuthController {
 
     try {
       const user = await this.authService.register(dataUser);
-
-      if(!user) return res.status(404).json({ message: 'Email already in use. Please use another email address.' })
-
       return res.status(201).json({ name: user?.name, email: user?.email });
-    } catch (error: any) {
-      return res.status(404).json({ error: error.message })
+    } catch (error) {
+      next(error);
     }
   }
 }
