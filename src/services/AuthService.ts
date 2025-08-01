@@ -2,8 +2,9 @@ import { IUser } from "../interfaces/IUser";
 import { UserRepository } from "../repositories/UserRepository";
 import { CreateUserDto } from "../schemas/userSchemas";
 import bcrypt from 'bcrypt';
+import { IAuthService } from "./interfaces/IAuthService";
 
-export class AuthService {
+export class AuthService implements IAuthService{
   private userRepository: UserRepository;
 
   constructor(userRepository: UserRepository) {
@@ -20,11 +21,7 @@ export class AuthService {
       password: hashPassword
     }
 
-    try {
-      const user = await this.userRepository.create(userData)
-      return user;
-    } catch(error) {
-      throw new Error('Error when creating user')
-    }
+    const user = await this.userRepository.create(userData)
+    return user;
   }
 }

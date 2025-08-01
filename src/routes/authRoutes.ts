@@ -13,4 +13,4 @@ const router = Router();
 
 router.post('/auth/register', validateData(createUserSchema), authController.register.bind(authController));
 
-export default router
+export default router;

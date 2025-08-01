@@ -1,9 +1,9 @@
-import { ICrud } from "../interfaces/ICrud";
 import { IUser } from "../interfaces/IUser";
 import User from "../models/User";
 import { CreateUserDto } from "../schemas/userSchemas";
+import { IUserRepository } from "./interfaces/IUserRepository";
 
-export class UserRepository implements ICrud<CreateUserDto, IUser> {
+export class UserRepository implements IUserRepository {
   async create(data: CreateUserDto): Promise<IUser | null> {
     const user = new User(data);
 

@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 import mongoose from "../db/connection";
 import { IUser } from "../interfaces/IUser";
 
-const UserShema: Schema = new Schema({
+const UserShema: Schema = new Schema<IUser>({
   name: {
     type: String,
     required: true,
