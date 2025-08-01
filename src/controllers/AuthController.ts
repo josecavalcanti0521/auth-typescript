@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AuthService } from "../services/AuthService";
-import { CreateUserDto } from "../schemas/userSchemas";
+import { CreateUserDto } from "../dtos/CreateUser.dto";
 
 export class AuthController {
   private authService: AuthService;
@@ -19,8 +19,8 @@ export class AuthController {
     }
 
     try {
-      const user = this.authService.register(dataUser)
-      return res.status(201).json(user)
+      const user = await this.authService.register(dataUser);
+      return res.status(201).json(user);
     } catch (error: any) {
       return res.status(404).json({ error: error.message })
     }

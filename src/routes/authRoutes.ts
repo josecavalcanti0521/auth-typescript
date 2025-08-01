@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { validateData } from "../middlewares/validateData";
-import { createUserSchema } from "../schemas/userSchemas";
+import { createUserSchema } from "../validation/userSchema";
 import { UserRepository } from "../repositories/UserRepository";
 import { AuthService } from "../services/AuthService";
 import { AuthController } from "../controllers/AuthController";

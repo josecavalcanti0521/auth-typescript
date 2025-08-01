@@ -1,8 +1,8 @@
 import { IUser } from "../interfaces/IUser";
 import { UserRepository } from "../repositories/UserRepository";
-import { CreateUserDto } from "../schemas/userSchemas";
 import bcrypt from 'bcrypt';
 import { IAuthService } from "./interfaces/IAuthService";
+import { CreateUserDto } from "../dtos/CreateUser.dto";
 
 export class AuthService implements IAuthService{
   private userRepository: UserRepository;
@@ -21,7 +21,8 @@ export class AuthService implements IAuthService{
       password: hashPassword
     }
 
-    const user = await this.userRepository.create(userData)
+    const user = await this.userRepository.create(userData);
+    
     return user;
   }
 }
