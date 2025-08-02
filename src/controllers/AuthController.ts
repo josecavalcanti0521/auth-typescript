@@ -59,7 +59,7 @@ export class AuthController {
     const id = user?.id;
     
     if(!id) {
-      throw new AppError('ID not provided in token.');
+      throw new AppError("ID not provided in token.");
     }
     
     try {
