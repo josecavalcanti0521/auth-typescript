@@ -17,7 +17,7 @@ export class AuthService implements IAuthService{
     const userExists = await this.userRepository.findByEmail(data.email);
 
     if(userExists) {
-      throw new AppError('Email já utilizado, por favor utilize outro email.', 404);
+      throw new AppError('Email already used, please use another email.', 404);
     };
 
     const salt = await bcrypt.genSalt(10)
@@ -32,5 +32,19 @@ export class AuthService implements IAuthService{
     const user = await this.userRepository.create(userData);
     
     return user;
+  }
+
+  async login(dataLogin: LoginUserDto): Promise<{ token: string, id: string } | null> {
+    const userExists = await this.userRepository.findByEmail(dataLogin.email);
+
+    if(!userExists) {
+      throw new AppError('Email not found.');
+    }
+
+    const checkPassword = await bcrypt.compare(dataLogin.password, userExists.password);
+
+    if(!checkPassword) {
+      throw new AppError('Invalid password.');
+    }
   }
 }
