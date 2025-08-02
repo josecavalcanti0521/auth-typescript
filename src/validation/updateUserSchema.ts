@@ -1,6 +1,6 @@
-import { z } from "zod";
+import z from "zod";
 
-export const createUserSchema = z.object({
+export const updateUserSchema = z.object({
   name: z
     .string({ message: "Username must be a string." })
     .min(1, "Name is required"),

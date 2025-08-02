@@ -6,6 +6,7 @@ import { LoginUserDto } from "../dtos/LoginUser.dto";
 import { AppError } from "../errors/AppError";
 import { createUserToken } from "../helpers/create-token-user";
 import bcrypt from 'bcrypt';
+import { UpdateUserDto } from "../dtos/UpdateUser.dto";
 
 export class AuthService implements IAuthService{
   private userRepository: UserRepository;
@@ -51,5 +52,23 @@ export class AuthService implements IAuthService{
     const id = userExists._id.toString();
 
     return { token, id }
+  }
+
+  async update(id: string, dataUser: UpdateUserDto): Promise<IUser | null> {
+    const user = await this.userRepository.findById(id);
+    
+    if(!user) {
+      throw new AppError('User not found.', 404);
+    }
+
+    const userExists = await this.userRepository.findByEmail(dataUser.email);
+      
+    if(userExists && userExists._id.toString() !== id) {
+      throw new AppError('Email already in use.', 400);
+    }
+
+    const updateUser = await this.userRepository.update(id, dataUser);
+    
+    return updateUser;
   }
 }
