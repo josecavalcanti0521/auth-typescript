@@ -13,6 +13,6 @@ const authController = new AuthController(authService);
 const router = Router();
 
 router.post('/auth/register', validateData(createUserSchema), authController.register.bind(authController));
-router.post('/auth/login', validateData(loginUserChema));
+router.post('/auth/login', validateData(loginUserChema), authController.login.bind(authController));
 
 export default router;

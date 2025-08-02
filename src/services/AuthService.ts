@@ -1,10 +1,11 @@
 import { IUser } from "../interfaces/IUser";
 import { UserRepository } from "../repositories/UserRepository";
-import bcrypt from 'bcrypt';
 import { IAuthService } from "./interfaces/IAuthService";
 import { CreateUserDto } from "../dtos/CreateUser.dto";
 import { LoginUserDto } from "../dtos/LoginUser.dto";
 import { AppError } from "../errors/AppError";
+import { createUserToken } from "../helpers/create-token-user";
+import bcrypt from 'bcrypt';
 
 export class AuthService implements IAuthService{
   private userRepository: UserRepository;
@@ -34,17 +35,21 @@ export class AuthService implements IAuthService{
     return user;
   }
 
-  async login(dataLogin: LoginUserDto): Promise<{ token: string, id: string } | null> {
+  async login(dataLogin: LoginUserDto): Promise<{ id: string, token: string } | null> {
     const userExists = await this.userRepository.findByEmail(dataLogin.email);
-
     if(!userExists) {
-      throw new AppError('Email not found.');
+      throw new AppError('Email not found.', 404);
     }
-
+    
     const checkPassword = await bcrypt.compare(dataLogin.password, userExists.password);
-
+    
     if(!checkPassword) {
-      throw new AppError('Invalid password.');
+      throw new AppError('Invalid password.', 404);
     }
+
+    const token = await createUserToken(userExists);
+    const id = userExists._id.toString();
+
+    return { token, id }
   }
 }

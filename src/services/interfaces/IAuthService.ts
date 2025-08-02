@@ -4,5 +4,5 @@ import { IUser } from "../../interfaces/IUser";
 
 export interface IAuthService {
   register(dataUser: CreateUserDto): Promise<IUser | null>;
-  login(dataLogin: LoginUserDto): Promise<{token: string, id: string} | null>;
+  login(dataLogin: LoginUserDto): Promise<{id: string, token: string} | null>;
 }
