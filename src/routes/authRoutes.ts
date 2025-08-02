@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { validateData } from "../middlewares/validateData";
-import { createUserSchema } from "../validation/userSchema";
+import { createUserSchema } from "../validation/createUserSchema";
 import { UserRepository } from "../repositories/UserRepository";
 import { AuthService } from "../services/AuthService";
 import { AuthController } from "../controllers/AuthController";
@@ -12,5 +12,5 @@ const authController = new AuthController(authService);
 const router = Router();
 
 router.post('/auth/register', validateData(createUserSchema), authController.register.bind(authController));
-
+router.post('/auth/login', )
 export default router;
